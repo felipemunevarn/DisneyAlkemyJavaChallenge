@@ -14,31 +14,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alkemyDisney.dao.ICharacterDao;
-import com.alkemyDisney.model.Charact;
+import com.alkemyDisney.dao.IMovieDao;
+import com.alkemyDisney.model.Movie;
 import com.mysql.cj.util.StringUtils;
 
 @RestController
-@RequestMapping("/characters")
-public class RestCharacterController {
-
+@RequestMapping("/movies")
+public class RestMovieController {
+	
 	@Autowired
-	@Qualifier("character")
-	private ICharacterDao repo;
+	@Qualifier("movie")
+	private IMovieDao repo;
 	
 	@GetMapping
-	public List<Charact> list(
-			@RequestParam(required = false) String name,
-			@RequestParam(required = false) String age,
-			@RequestParam(required = false) String idMovie) {
+	public List<Movie> list(
+			@RequestParam(required = false) String title,
+			@RequestParam(required = false) String genre,
+			@RequestParam(required = false) String order) {
 		
-		if(!StringUtils.isNullOrEmpty(name)) {
-            return repo.findCharacterByName(name);
+		if(!StringUtils.isNullOrEmpty(title)) {
+            return repo.findMovieByTitle(title);
         }
 		
-		if(!StringUtils.isNullOrEmpty(age)) {
-            return repo.findCharacterByAge(Integer.parseInt(age));
-        }
+//		if(!StringUtils.isNullOrEmpty(age)) {
+//            return repo.findCharacterByAge(Integer.parseInt(age));
+//        }
 //		
 //		if(idMovie != null) {
 //            return repo.findCharacterByIdMovie(idMovie);
@@ -48,17 +48,17 @@ public class RestCharacterController {
 	}
 
 	@PostMapping
-	public void insert(@RequestBody Charact character) {
-		repo.save(character);
+	public void insert(@RequestBody Movie movie) {
+		repo.save(movie);
 	}
 	
 	@PutMapping
-	public void modify(@RequestBody Charact character) {
-		repo.save(character);
+	public void modify(@RequestBody Movie movie) {
+		repo.save(movie);
 	}
 	
-	@DeleteMapping(value = "/{id_character}")
-	public void deleteById(@PathVariable("id_character") Integer id) {
+	@DeleteMapping(value = "/{id_movie}")
+	public void deleteById(@PathVariable("id_movie") Integer id) {
 		repo.deleteById(id);
 	}
 	
