@@ -17,7 +17,7 @@ public class DisneyApplication implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		LOG.info("POST with realtions");		
+		LOG.info("POST with relations");		
 	}
 
 }

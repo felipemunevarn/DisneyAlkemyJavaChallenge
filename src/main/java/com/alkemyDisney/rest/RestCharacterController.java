@@ -15,16 +15,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemyDisney.dao.ICharacterDao;
+import com.alkemyDisney.dao.IMovieDao;
 import com.alkemyDisney.model.Charact;
+import com.alkemyDisney.model.Movie;
 import com.mysql.cj.util.StringUtils;
 
 @RestController
-@RequestMapping("/characters")
+@RequestMapping(value = "/characters")
 public class RestCharacterController {
 
 	@Autowired
 	@Qualifier("character")
 	private ICharacterDao repo;
+	
+	@Autowired
+	IMovieDao movieRepository;
 	
 	@GetMapping
 	public List<Charact> list(
@@ -55,6 +60,16 @@ public class RestCharacterController {
 	@PutMapping
 	public void modify(@RequestBody Charact character) {
 		repo.save(character);
+	}
+	
+	@PutMapping(value = "/{characterId}/movies/{movieId}")
+	public Charact associateMoviesToCharacter(
+			@PathVariable Integer movieId,
+			@PathVariable Integer characterId) {
+		Movie movie = movieRepository.findById(movieId).get();
+		Charact character = repo.findById(characterId).get();
+		character.associateMovie(movie);
+		return repo.save(character);
 	}
 	
 	@DeleteMapping(value = "/{id_character}")

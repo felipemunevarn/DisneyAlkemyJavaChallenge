@@ -1,7 +1,9 @@
 package com.alkemyDisney.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Movie {
@@ -29,8 +33,9 @@ public class Movie {
 	
 	private int rate;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "movies")
-	List<Charact> characters;
+	Set<Charact> characters = new HashSet<>();
 	
 	@ManyToMany
     @JoinTable(name = "movie_genre", 
@@ -42,7 +47,7 @@ public class Movie {
 		super();
 	}
 
-	public Movie(int idMovie, String image, String title, Date releaseDate, int rate, List<Charact> characters,
+	public Movie(int idMovie, String image, String title, Date releaseDate, int rate, Set<Charact> characters,
 			List<Genre> genres) {
 		super();
 		this.idMovie = idMovie;
@@ -53,6 +58,8 @@ public class Movie {
 		this.characters = characters;
 		this.genres = genres;
 	}
+
+
 
 	public int getIdMovie() {
 		return idMovie;
@@ -94,11 +101,11 @@ public class Movie {
 		this.rate = rate;
 	}
 
-	public List<Charact> getCharacters() {
+	public Set<Charact> getCharacters() {
 		return characters;
 	}
 
-	public void setCharacters(List<Charact> characters) {
+	public void setCharacters(Set<Charact> characters) {
 		this.characters = characters;
 	}
 

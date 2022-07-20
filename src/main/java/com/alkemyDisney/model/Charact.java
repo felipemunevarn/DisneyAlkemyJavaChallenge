@@ -1,7 +1,9 @@
 package com.alkemyDisney.model;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,18 +35,18 @@ public class Charact {
 	@Column(name = "history", length = 1048)
 	private String history;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "charact_movie", 
     joinColumns = @JoinColumn(name = "idCharacter", referencedColumnName = "idCharacter"), 
     inverseJoinColumns = @JoinColumn(name = "idMovie", referencedColumnName = "idMovie"))
-	private List<Movie> movies;
+	private Set<Movie> movies = new HashSet<>();
 
 	public Charact() {
 		super();
 	}
 
 	public Charact(int idCharacter, String image, String name, int age, double weight, String history,
-			List<Movie> movies) {
+			Set<Movie> movies) {
 		super();
 		this.idCharacter = idCharacter;
 		this.image = image;
@@ -102,12 +104,17 @@ public class Charact {
 	public void setHistory(String history) {
 		this.history = history;
 	}
-	
-	public List<Movie> getMovies() {
+
+	public Set<Movie> getMovies() {
 		return movies;
 	}
 
-	public void setMovies(List<Movie> movies) {
+	public void setMovies(Set<Movie> movies) {
 		this.movies = movies;
 	}
+
+	public void associateMovie(Movie movie) {
+		movies.add(movie);		
+	}
+	
 }
