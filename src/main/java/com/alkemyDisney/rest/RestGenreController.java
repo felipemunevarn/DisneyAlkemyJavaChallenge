@@ -1,16 +1,17 @@
 package com.alkemyDisney.rest;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemyDisney.dao.IGenreDao;
 import com.alkemyDisney.model.Genre;
 
 @RestController
+@RequestMapping(value = "/genres")
 public class RestGenreController {
 
 	@Autowired
@@ -22,10 +23,10 @@ public class RestGenreController {
 //		return repo.findAll();
 //	}
 
-//	@PostMapping
-//	public void insert(@RequestBody Charact character) {
-//		repo.save(character);
-//	}
+	@PostMapping
+	public void insert(@RequestBody Genre genre) {
+		repo.save(genre);
+	}
 //	
 //	@PutMapping
 //	public void modify(@RequestBody Charact character) {

@@ -35,7 +35,7 @@ public class RestCharacterController {
 	public List<Charact> list(
 			@RequestParam(required = false) String name,
 			@RequestParam(required = false) String age,
-			@RequestParam(required = false) String idMovie) {
+			@RequestParam(required = false) String movies) {
 		
 		if(!StringUtils.isNullOrEmpty(name)) {
             return repo.findCharacterByName(name);
@@ -44,22 +44,26 @@ public class RestCharacterController {
 		if(!StringUtils.isNullOrEmpty(age)) {
             return repo.findCharacterByAge(Integer.parseInt(age));
         }
-//		
-//		if(idMovie != null) {
-//            return repo.findCharacterByIdMovie(idMovie);
-//        }
-//		
+		
+		if(!StringUtils.isNullOrEmpty(movies)) {
+            return repo.findCharacterByMovies(movies);
+        }
+		
 		return repo.findAll();
 	}
 
 	@PostMapping
-	public void insert(@RequestBody Charact character) {
-		repo.save(character);
+	public Charact insert(@RequestBody Charact character) {
+		return repo.save(character);
 	}
 	
+	
+	
 	@PutMapping
-	public void modify(@RequestBody Charact character) {
-		repo.save(character);
+	public Charact modify(@RequestBody Charact character) {
+		List<Charact> ch = repo.findCharacterByIdCharacter(character.getIdCharacter());
+		character.setMovies(ch.get(0).getMovies());
+		return repo.save(character);
 	}
 	
 	@PutMapping(value = "/{characterId}/movies/{movieId}")

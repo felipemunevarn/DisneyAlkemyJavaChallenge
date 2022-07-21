@@ -35,20 +35,20 @@ public class Movie {
 	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "movies")
-	Set<Charact> characters = new HashSet<>();
+	private Set<Charact> characters = new HashSet<>();
 	
 	@ManyToMany
     @JoinTable(name = "movie_genre", 
     joinColumns = @JoinColumn(name = "idMovie", referencedColumnName = "idMovie"), 
     inverseJoinColumns = @JoinColumn(name = "idGenre", referencedColumnName = "idGenre"))
-	private List<Genre> genres;
+	private Set<Genre> genres = new HashSet<>();
 	
 	public Movie() {
 		super();
 	}
 
 	public Movie(int idMovie, String image, String title, Date releaseDate, int rate, Set<Charact> characters,
-			List<Genre> genres) {
+			Set<Genre> genres) {
 		super();
 		this.idMovie = idMovie;
 		this.image = image;
@@ -58,8 +58,6 @@ public class Movie {
 		this.characters = characters;
 		this.genres = genres;
 	}
-
-
 
 	public int getIdMovie() {
 		return idMovie;
@@ -109,11 +107,11 @@ public class Movie {
 		this.characters = characters;
 	}
 
-	public List<Genre> getGenres() {
+	public Set<Genre> getGenres() {
 		return genres;
 	}
 
-	public void setGenres(List<Genre> genres) {
+	public void setGenres(Set<Genre> genres) {
 		this.genres = genres;
 	}
 

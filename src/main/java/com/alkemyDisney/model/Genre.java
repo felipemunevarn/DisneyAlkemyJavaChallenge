@@ -1,6 +1,8 @@
 package com.alkemyDisney.model;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +22,15 @@ public class Genre {
 	private String name;
 	
 	@ManyToMany(mappedBy = "genres")
-	List<Movie> movies;
+	Set<Movie> movies= new HashSet<>();
+
+	public Genre(int idGenre, String image, String name, Set<Movie> movies) {
+		super();
+		this.idGenre = idGenre;
+		this.image = image;
+		this.name = name;
+		this.movies = movies;
+	}
 
 	public int getIdGenre() {
 		return idGenre;
@@ -46,13 +56,12 @@ public class Genre {
 		this.name = name;
 	}
 
-	public List<Movie> getMovies() {
+	public Set<Movie> getMovies() {
 		return movies;
 	}
 
-	public void setMovies(List<Movie> movies) {
+	public void setMovies(Set<Movie> movies) {
 		this.movies = movies;
-	}
-	
+	}	
 	
 }
