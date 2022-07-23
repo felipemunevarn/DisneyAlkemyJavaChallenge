@@ -1,5 +1,6 @@
 package com.alkemyDisney.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.alkemyDisney.dao.ICharacterDao;
 import com.alkemyDisney.dao.IMovieDao;
 import com.alkemyDisney.model.Charact;
 import com.alkemyDisney.model.Movie;
+import com.alkemyDisney.service.CharactDTO;
 import com.mysql.cj.util.StringUtils;
 
 @RestController
@@ -38,15 +40,15 @@ public class RestCharacterController {
 			@RequestParam(required = false) String movies) {
 		
 		if(!StringUtils.isNullOrEmpty(name)) {
-            return repo.findCharacterByName(name);
+           return repo.findCharacterByName(name);
         }
 		
 		if(!StringUtils.isNullOrEmpty(age)) {
-            return repo.findCharacterByAge(Integer.parseInt(age));
+			return repo.findCharacterByAge(Integer.parseInt(age));
         }
 		
 		if(!StringUtils.isNullOrEmpty(movies)) {
-            return repo.findCharacterByMovies(movies);
+			return repo.findCharacterByMovies(movies);
         }
 		
 		return repo.findAll();
@@ -56,8 +58,6 @@ public class RestCharacterController {
 	public Charact insert(@RequestBody Charact character) {
 		return repo.save(character);
 	}
-	
-	
 	
 	@PutMapping
 	public Charact modify(@RequestBody Charact character) {

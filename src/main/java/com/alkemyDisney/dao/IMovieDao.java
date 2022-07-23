@@ -12,4 +12,6 @@ public interface IMovieDao extends JpaRepository<Movie, Integer>  {
 
 	List<Movie> findMovieByTitle(String title);
 
+//	List<Movie> findMovieByGender(int parseInt);
+
 }

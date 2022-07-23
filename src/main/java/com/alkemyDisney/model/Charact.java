@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
 @Entity
 public class Charact {
 
@@ -116,5 +119,11 @@ public class Charact {
 	public void associateMovie(Movie movie) {
 		movies.add(movie);		
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Charact [idCharacter=" + idCharacter + ", image=" + image + ", name=" + name + ", age=" + age
+				+ ", weight=" + weight + ", history=" + history + ", movies=" + movies + "]";
+	}
+		
 }

@@ -1,5 +1,6 @@
 package com.alkemyDisney.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemyDisney.dao.IMovieDao;
 import com.alkemyDisney.model.Movie;
+import com.alkemyDisney.service.MovieDTO;
 import com.mysql.cj.util.StringUtils;
 
 @RestController
@@ -27,24 +29,36 @@ public class RestMovieController {
 	private IMovieDao repo;
 	
 	@GetMapping
-	public List<Movie> list(
+	public List<MovieDTO> list(
 			@RequestParam(required = false) String title,
 			@RequestParam(required = false) String genre,
 			@RequestParam(required = false) String order) {
 		
 		if(!StringUtils.isNullOrEmpty(title)) {
-            return repo.findMovieByTitle(title);
+            List<Movie> response = repo.findMovieByTitle(title);
+            return mapCharacters(response);
         }
 		
-//		if(!StringUtils.isNullOrEmpty(age)) {
-//            return repo.findCharacterByAge(Integer.parseInt(age));
+//		if(!StringUtils.isNullOrEmpty(genre)) {
+//            List<Movie> response = repo.findMovieByGender(Integer.parseInt(genre));
+//            return mapCharacters(response);
 //        }
-//		
+		
 //		if(idMovie != null) {
 //            return repo.findCharacterByIdMovie(idMovie);
 //        }
-//		
-		return repo.findAll();
+		
+		List<Movie> response = repo.findAll();
+		return mapCharacters(response);
+	}
+
+	private List<MovieDTO> mapCharacters(List<Movie> response) {
+		List<MovieDTO> rsp = new ArrayList<>();
+		for (Movie movie : response) {
+			MovieDTO movieDTO = new MovieDTO(movie);
+			rsp.add(movieDTO);
+		}
+		return rsp;
 	}
 
 	@PostMapping

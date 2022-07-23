@@ -12,15 +12,17 @@ import com.alkemyDisney.model.Charact;
 @Qualifier("character")
 public interface ICharacterDao extends JpaRepository<Charact, Integer>{
 
-	List<Charact> findCharacterByName(String name);
+	@Query(value = "SELECT * FROM charact WHERE name = :name", nativeQuery = true)
+	List<Charact> findCharacterByName(@Param("name") String name);
 
-	List<Charact> findCharacterByAge(int i);
-
-	List<Charact> findCharacterByIdCharacter(int idCharacter);
+	@Query(value = "SELECT * FROM charact WHERE age = :age", nativeQuery = true)
+	List<Charact> findCharacterByAge(@Param("age") int age);
 
 	@Query(value = "SELECT * FROM charact c "
 			+ "INNER JOIN charact_movie cm "
 			+ "ON c.id_character = cm.id_character "
 			+ "AND cm.id_movie = :idMovie", nativeQuery = true)
 	List<Charact> findCharacterByMovies(@Param("idMovie") String idMovie);
+	
+	List<Charact> findCharacterByIdCharacter(int idCharacter);
 }
