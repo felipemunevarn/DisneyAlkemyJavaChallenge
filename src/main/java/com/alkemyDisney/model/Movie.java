@@ -113,5 +113,13 @@ public class Movie {
 	public void setGenres(Set<Genre> genres) {
 		this.genres = genres;
 	}
+	
+	public void associateCharacter(Charact character) {
+		characters.add(character);		
+	}
+
+	public void associateGenre(Genre genre) {
+		genres.add(genre);		
+	}
 
 }

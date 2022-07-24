@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alkemyDisney.dao.ICharacterDao;
+import com.alkemyDisney.dao.IGenreDao;
 import com.alkemyDisney.dao.IMovieDao;
+import com.alkemyDisney.model.Charact;
+import com.alkemyDisney.model.Genre;
 import com.alkemyDisney.model.Movie;
 import com.alkemyDisney.service.MovieDTO;
 import com.mysql.cj.util.StringUtils;
@@ -28,6 +32,12 @@ public class RestMovieController {
 	@Qualifier("movie")
 	private IMovieDao repo;
 	
+	@Autowired
+	ICharacterDao characterRepository;
+	
+	@Autowired
+	IGenreDao genreRepository;
+	
 	@GetMapping
 	public List<MovieDTO> list(
 			@RequestParam(required = false) String title,
@@ -36,23 +46,19 @@ public class RestMovieController {
 		
 		if(!StringUtils.isNullOrEmpty(title)) {
             List<Movie> response = repo.findMovieByTitle(title);
-            return mapCharacters(response);
+            return mapMovies(response);
         }
 		
-//		if(!StringUtils.isNullOrEmpty(genre)) {
-//            List<Movie> response = repo.findMovieByGender(Integer.parseInt(genre));
-//            return mapCharacters(response);
-//        }
-		
-//		if(idMovie != null) {
-//            return repo.findCharacterByIdMovie(idMovie);
-//        }
+		if(!StringUtils.isNullOrEmpty(genre)) {
+			List<Movie> response = repo.findMovieByGenres(genre);
+			return mapMovies(response);
+        }
 		
 		List<Movie> response = repo.findAll();
-		return mapCharacters(response);
+		return mapMovies(response);
 	}
 
-	private List<MovieDTO> mapCharacters(List<Movie> response) {
+	private List<MovieDTO> mapMovies(List<Movie> response) {
 		List<MovieDTO> rsp = new ArrayList<>();
 		for (Movie movie : response) {
 			MovieDTO movieDTO = new MovieDTO(movie);
@@ -64,6 +70,26 @@ public class RestMovieController {
 	@PostMapping
 	public void insert(@RequestBody Movie movie) {
 		repo.save(movie);
+	}
+	
+	@PostMapping(value = "/{movieId}/characters/{characterId}")
+	public Movie associateCharacterToMovies(
+			@PathVariable Integer movieId,
+			@PathVariable Integer characterId) {
+		Movie movie = repo.findById(movieId).get();
+		Charact character = characterRepository.findById(characterId).get();
+		movie.associateCharacter(character);
+		return repo.save(movie);
+	}
+	
+	@PutMapping(value = "/{movieId}/genres/{genreId}")
+	public Movie associateGenresToMovie(
+			@PathVariable Integer movieId,
+			@PathVariable Integer genreId) {
+		Movie movie = repo.findById(movieId).get();
+		Genre genre = genreRepository.findById(genreId).get();
+		movie.associateGenre(genre);
+		return repo.save(movie);
 	}
 	
 	@PutMapping

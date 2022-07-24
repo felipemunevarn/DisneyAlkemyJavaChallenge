@@ -19,7 +19,7 @@ public class MovieDTO {
 	private Date releaseDate;
 	private int rate;
 	private Set<CharactDTO> characters = new HashSet<>();
-	private Set<Genre> genres = new HashSet<>();
+	private Set<GenreDTO> genres = new HashSet<>();
 	
 	public MovieDTO() {}
 	
@@ -29,7 +29,6 @@ public class MovieDTO {
 		this.title = movie.getTitle();
 		this.releaseDate = movie.getReleaseDate();
 		this.rate = movie.getRate();
-//		this.genres = genres;
 		
 		for(Charact character : movie.getCharacters()) {
 			CharactDTO charactDTO = new CharactDTO();
@@ -42,8 +41,13 @@ public class MovieDTO {
 			characters.add(charactDTO);
 		}
 		
-		// TODO: arrange this line
-		this.genres = null;
+		for(Genre genre: movie.getGenres()) {
+			GenreDTO genreDTO = new GenreDTO();
+			genreDTO.setIdGenre(genre.getIdGenre());
+			genreDTO.setImage(genre.getImage());
+			genreDTO.setName(genre.getName());
+			genres.add(genreDTO);
+		}
 	}
 
 	public int getIdMovie() {
@@ -94,11 +98,11 @@ public class MovieDTO {
 		this.characters = characters;
 	}
 
-	public Set<Genre> getGenres() {
+	public Set<GenreDTO> getGenres() {
 		return genres;
 	}
 
-	public void setGenres(Set<Genre> genres) {
+	public void setGenres(Set<GenreDTO> genres) {
 		this.genres = genres;
 	}
 	

@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Genre {
 
@@ -20,9 +22,12 @@ public class Genre {
 	private String image;
 	
 	private String name;
-	
+
+	@JsonIgnore
 	@ManyToMany(mappedBy = "genres")
 	Set<Movie> movies= new HashSet<>();
+
+	public Genre() {}
 
 	public Genre(int idGenre, String image, String name, Set<Movie> movies) {
 		super();
