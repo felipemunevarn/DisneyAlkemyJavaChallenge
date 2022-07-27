@@ -8,6 +8,5 @@ import com.alkemyDisney.model.Genre;
 @Qualifier("genre")
 public interface IGenreDao extends JpaRepository<Genre, Integer>  {
 
-//	List<Genre> findMovieByTitle(String title);
 	
 }
