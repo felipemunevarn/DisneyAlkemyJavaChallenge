@@ -72,10 +72,10 @@ public class RestMovieController {
 		repo.save(movie);
 	}
 	
-	@PostMapping(value = "/{movieId}/characters/{characterId}")
+	@PutMapping(value = "/{movieId}/characters/{characterId}")
 	public Movie associateCharacterToMovies(
-			@PathVariable Integer movieId,
-			@PathVariable Integer characterId) {
+			@PathVariable("movieId") Integer movieId,
+			@PathVariable("characterId") Integer characterId) {
 		Movie movie = repo.findById(movieId).get();
 		Charact character = characterRepository.findById(characterId).get();
 		movie.associateCharacter(character);
@@ -84,8 +84,8 @@ public class RestMovieController {
 	
 	@PutMapping(value = "/{movieId}/genres/{genreId}")
 	public Movie associateGenresToMovie(
-			@PathVariable Integer movieId,
-			@PathVariable Integer genreId) {
+			@PathVariable("movieId") Integer movieId,
+			@PathVariable("genreId") Integer genreId) {
 		Movie movie = repo.findById(movieId).get();
 		Genre genre = genreRepository.findById(genreId).get();
 		movie.associateGenre(genre);

@@ -1,11 +1,16 @@
 package com.alkemyDisney.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class User {
@@ -17,10 +22,23 @@ public class User {
 	private String userName;
 	
 	private String password;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", 
+    joinColumns = @JoinColumn(name = "idUser", referencedColumnName = "idUser"), 
+    inverseJoinColumns = @JoinColumn(name = "idRole", referencedColumnName = "idRole"))
+	private Set<Role> roles = new HashSet<>();
 
-	public User(String userName, String password) {
+	public User() {
+		super();
+	}
+
+	public User(int idUser, String userName, String password, Set<Role> roles) {
+		super();
+		this.idUser = idUser;
 		this.userName = userName;
 		this.password = password;
+		this.roles = roles;
 	}
 
 	public int getIdUser() {
@@ -46,4 +64,17 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public void associateRole(Role role) {
+		roles.add(role);		
+	}
+	
 }

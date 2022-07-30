@@ -68,8 +68,8 @@ public class RestCharacterController {
 	
 	@PutMapping(value = "/{characterId}/movies/{movieId}")
 	public Charact associateMoviesToCharacter(
-			@PathVariable Integer movieId,
-			@PathVariable Integer characterId) {
+			@PathVariable("movieId") Integer movieId,
+			@PathVariable("characterId") Integer characterId) {
 		Movie movie = movieRepository.findById(movieId).get();
 		Charact character = repo.findById(characterId).get();
 		character.associateMovie(movie);
