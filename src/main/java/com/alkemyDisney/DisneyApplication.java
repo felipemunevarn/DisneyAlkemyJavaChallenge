@@ -10,12 +10,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
-import com.alkemyDisney.model.Role;
-import com.alkemyDisney.model.User;
-import com.alkemyDisney.rest.RestRoleController;
-import com.alkemyDisney.rest.RestUserController;
 
 @CrossOrigin(origins = "*")
 @EnableAutoConfiguration
@@ -34,20 +31,8 @@ public class DisneyApplication implements CommandLineRunner {
 		LOG.info("Using spring security");		
 	}
 	
-//	@Bean
-//	CommandLineRunner run(RestRoleController roleController) {
-//		return args -> {
-//			roleController.insert(new Role(0, "USER", new HashSet<>()));
-//			roleController.insert(new Role(0, "MANAGER", new HashSet<>()));
-//			roleController.insert(new Role(0, "ADMIN", new HashSet<>()));
-//		};		
-//	}
-	
-//	@Bean
-//	CommandLineRunner run(RestUserController userController) {
-//		return args -> {
-//			userController.associateRolesToUser(15, 15);
-//			userController.associateRolesToUser(17, 18);
-//		};		
-//	}
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }
