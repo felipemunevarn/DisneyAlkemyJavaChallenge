@@ -1,6 +1,7 @@
 package com.alkemyDisney.fiter;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -48,8 +50,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 				.withSubject(user.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
 				.withIssuer(request.getRequestURL().toString())
-				.withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors)))
+				.withClaim("roles", 
+						user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				.sign(algorithm);
+		String refresh_token = JWT.create()
+				.withSubject(user.getUsername())
+				.withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+				.withIssuer(request.getRequestURL().toString())
+				.sign(algorithm);
+		response.setHeader("access_token", access_token);
+		response.setHeader("refresh_token", refresh_token);
 	}
 	
 }
